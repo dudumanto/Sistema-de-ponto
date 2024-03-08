@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Horários</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- DataTables CSS e jQuery -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
@@ -19,20 +17,27 @@
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th>Horário</th>
+                    <th>Data</th>
+                    
                     <th>Entrada</th>
                     <th>Saída</th>
                     <th>Saldo (Horas)</th>
-                    <th>Saldo (Segundos)</th>
+                    <th>Saldo (Minutos)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($horarios as $horario)
                 <tr>
                     <td>{{ $horario->user->name }}</td>
-                    <td>{{ $horario->ponto_time }}</td>
-                    <td>{{ $horario->entrada }}</td>
-                    <td>{{ $horario->saida }}</td>
+                    <td>
+                        {{ Carbon\Carbon::parse($horario->ponto_time)->format('d/m/Y') }}
+                    </td>
+                    <td>
+                        {{ Carbon\Carbon::parse($horario->entrada)->format('H:i') }}
+                    </td>
+                    <td>
+                        {{ Carbon\Carbon::parse($horario->saida)->format('H:i') }}
+                    </td>
                     <td>
                         @if($horario->saida)
                             {{ \Carbon\Carbon::parse($horario->saida)->diffInHours($horario->entrada) }} horas
@@ -42,7 +47,8 @@
                     </td>
                     <td>
                         @if($horario->saida)
-                            {{ \Carbon\Carbon::parse($horario->saida)->diffInSeconds($horario->entrada) }} segundos
+                            {{-- Convert difference in seconds to minutes and round down --}}
+                            {{ floor(\Carbon\Carbon::parse($horario->saida)->diffInSeconds($horario->entrada) / 60) }} minutos
                         @else
                             -
                         @endif
