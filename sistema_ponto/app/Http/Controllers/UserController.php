@@ -72,18 +72,22 @@ class UserController extends Controller
     }
 }
 
-    public function verHorarios()
-    {
-        // Verificar se o usuário autenticado é um administrador
-        if (Auth::user()->is_admin) {
-            // Recuperar os horários de todas as pessoas
-            $horarios = UserTimeLog::all();
+public function verHorarios()
+{
+    // Recuperar o ID do usuário autenticado
+    $userId = Auth::id();
 
-            // Passar os horários para a view
-            return view('ver_horarios', ['horarios' => $horarios]);
-        } else {
-            // Redirecionar ou exibir uma mensagem de erro
-            return redirect()->route('acesso-negado');
-        }
+    // Verificar se o usuário autenticado é um administrador
+    if (Auth::user()->is_admin) {
+        // Se for um administrador, recuperar todos os horários
+        $horarios = UserTimeLog::all();
+    } else {
+        // Se não for um administrador, recuperar apenas os horários do usuário atual
+        $horarios = UserTimeLog::where('user_id', $userId)->get();
     }
+
+    // Passar os horários para a view
+    return view('ver_horarios', ['horarios' => $horarios]);
+}
+    
 }

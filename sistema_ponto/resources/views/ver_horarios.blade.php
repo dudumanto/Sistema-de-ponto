@@ -6,11 +6,16 @@
     <title>Ver Horários</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- DataTables CSS e jQuery -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
     <div class="container">
         <h1>Horários de todas as pessoas</h1>
-        <table class="table">
+        <table class="table dataTable">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -50,4 +55,9 @@
         <a href="{{ route('inicio') }}" class="btn btn-primary">Voltar</a>
     </div>
 </body>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+</script>
 </html>
