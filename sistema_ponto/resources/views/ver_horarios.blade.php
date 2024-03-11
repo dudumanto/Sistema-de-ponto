@@ -22,7 +22,6 @@
                     <th>Entrada</th>
                     <th>Saída</th>
                     <th>Saldo (Horas)</th>
-                    <th>Saldo (Minutos)</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,14 +44,7 @@
                             Ainda trabalhando
                         @endif
                     </td>
-                    <td>
-                        @if($horario->saida)
-                            {{-- Convert difference in seconds to minutes and round down --}}
-                            {{ floor(\Carbon\Carbon::parse($horario->saida)->diffInSeconds($horario->entrada) / 60) }} minutos
-                        @else
-                            -
-                        @endif
-                    </td>
+                   
                     
                 </tr>
                 @endforeach
