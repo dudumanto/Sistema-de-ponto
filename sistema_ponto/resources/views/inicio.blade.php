@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horário Oficial</title>
   <!-- Bootstrap CSS -->
+  <!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9">
+
+<!-- ... Seu código HTML continua aqui ... -->
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     .time-container {
@@ -29,6 +34,9 @@
   </div>
   <div class="button-container">
   <button type="button" class="btn btn-primary" onclick="marcarPonto({{ Auth::user()->id }})">Ponto</button>
+  @if($isAdmin)
+            <a href="{{ route('registration.form') }}" class="btn btn-success">Cadastrar Novo Usuário</a>
+  @endif
   </div>
 </div>
 
@@ -69,6 +77,40 @@
     });
   }
 </script>
+<script>
+  function marcarPonto(userId) {
+    $.ajax({
+      url: '/marcar-ponto',
+      method: 'POST',
+      data: {
+        userId: userId,
+        _token: '{{ csrf_token() }}'
+      },
+      success: function(response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso!',
+          text: response.message,
+        });
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro!',
+          text: 'Algo deu errado. Por favor, tente novamente.',
+        });
+      }
+    });
+  }
+</script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 </body>
 </html>

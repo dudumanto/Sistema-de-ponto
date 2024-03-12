@@ -19,3 +19,6 @@ Route::get('/inicio', [UserController::class,'inicio'])->name('inicio');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/marcar-ponto', [UserController::class, 'marcarPonto'])->name('marcar-ponto');
 Route::get('/horarios', [UserController::class, 'verHorarios'])->name('ver-horarios');
+Route::get('/cadastro', [UserController::class, 'showRegistrationForm'])->name('registration.form');
+Route::post('/cadastro', [UserController::class, 'register'])->name('user.register');
+Route::get('/iniciar', [UserController::class, 'iniciar'])->name('iniciar');

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserTimeLog; // Importe o modelo UserTimeLog
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -88,6 +90,43 @@ public function verHorarios()
 
     // Passar os horários para a view
     return view('ver_horarios', ['horarios' => $horarios]);
+}
+public function showRegistrationForm()
+{
+    return view('cadastro');
+}
+
+public function register(Request $request)
+{
+    // Validação dos dados do formulário
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|string|min:8',
+    ]);
+
+    // Criação do novo usuário
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Autenticação do novo usuário
+    Auth::login($user);
+
+    // Redirecionamento após o cadastro
+    return redirect('/inicio')->with('success', 'Cadastro realizado com sucesso!');
+}public function iniciar()
+{
+    //verifica se é admin, se for vai aparecer o botão de cadastras novos users
+    $isAdmin = false;
+
+    if (Auth::check() && Auth::user()->is_admin) {
+        $isAdmin = true;
+    }
+
+    return view('inicio', ['isAdmin' => $isAdmin]);
 }
     
 }
